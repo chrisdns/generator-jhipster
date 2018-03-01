@@ -28,6 +28,7 @@ export interface IHeaderProps {
   currentLocale: string;
   onLocaleChange: Function;
   <%_ } _%>
+  isAdmin: boolean;
 }
 const BrandIcon = props => (
   <div {...props} className="brand-icon">
@@ -62,7 +63,7 @@ export class Header extends React.Component<IHeaderProps, { menuOpen: boolean }>
   }
 
   render() {
-    const {<%_ if (enableTranslation) { _%> currentLocale, <%_ } _%> isAuthenticated} = this.props;
+    const {<%_ if (enableTranslation) { _%> currentLocale, <%_ } _%> isAuthenticated, isAdmin } = this.props;
     const entityMenuItems = [
       /* jhipster-needle-add-entity-to-menu - - JHipster will add entities to the menu here */
       <span key="dummy-placeholder"/> /* workaround to avoid error when there are no entities */
@@ -107,6 +108,28 @@ export class Header extends React.Component<IHeaderProps, { menuOpen: boolean }>
       );
     }
 
+    const entitiesTab = (
+      <UncontrolledNavDropdown key="entities">
+        <DropdownToggle nav caret className="d-flex align-items-center">
+          <FaThList />
+          <span>Entities</span>
+        </DropdownToggle>
+        <DropdownMenu right>{entityMenuItems}</DropdownMenu>
+      </UncontrolledNavDropdown>
+    );
+
+    const adminTab = (
+      <UncontrolledNavDropdown key="admin">
+        <DropdownToggle nav caret className="d-flex align-items-center">
+          <FaUserPlus/>
+          <span>Administration</span>
+        </DropdownToggle>
+        <DropdownMenu right style={{ width: '130%' }}>
+        {adminMenuItems}
+        </DropdownMenu>
+      </UncontrolledNavDropdown>
+    );
+
     return (
       <div id="app-header">
         {this.renderDevRibbon()}
@@ -126,26 +149,7 @@ export class Header extends React.Component<IHeaderProps, { menuOpen: boolean }>
                   <span>Home</span>
                 </NavLink>
               </NavItem>
-              {isAuthenticated ? [
-                <UncontrolledNavDropdown key="entities">
-                  <DropdownToggle nav caret className="d-flex align-items-center">
-                    <FaThList />
-                    <span>Entities</span>
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    {entityMenuItems}
-                  </DropdownMenu>
-                </UncontrolledNavDropdown>,
-                <UncontrolledNavDropdown key="admin">
-                  <DropdownToggle nav caret className="d-flex align-items-center">
-                    <FaUserPlus />
-                    <span>Administration</span>
-                  </DropdownToggle>
-                  <DropdownMenu right style={{ width: '120%' }}>
-                    {adminMenuItems}
-                  </DropdownMenu>
-                </UncontrolledNavDropdown>
-              ] : null}
+              {isAuthenticated ? (isAdmin ? [ entitiesTab, adminTab ] : entitiesTab) : null}
             <%_ if (enableTranslation) { _%>
               { locales.length > 1 ?
                 <UncontrolledNavDropdown>
