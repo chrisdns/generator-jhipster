@@ -1,0 +1,67 @@
+import { expect } from 'chai';
+import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+
+import sessions, { ACTION_TYPES } from 'app/modules/account/sessions/sessions.reducer';
+
+describe('Sessions reducer tests', () => {
+  describe('Common tests', () => {
+    it('should return the initial state', () => {
+      const toTest = sessions(undefined, {});
+      expect(toTest).to.contain({
+        loading: false,
+        updateSuccess: false,
+        updateFailure: false
+      });
+      expect(toTest.sessions.length).to.equals(0);
+    });
+  });
+
+  describe('Main actions', () => {
+    it('should detect a request', () => {
+      const expected = {
+        loading: true,
+        updateSuccess: false,
+        updateFailure: false
+      };
+      const toTestFindAll = sessions(undefined, { type: REQUEST(ACTION_TYPES.FIND_ALL) });
+      expect(toTestFindAll).to.contain(expected);
+      expect(toTestFindAll.sessions.length).to.equals(0);
+
+      const toTestInvalidate = sessions(undefined, { type: REQUEST(ACTION_TYPES.INVALIDATE) });
+      expect(toTestInvalidate).to.contain(expected);
+      expect(toTestInvalidate.sessions.length).to.equals(0);
+    });
+
+    it('should detect a success', () => {
+      const toTestFindAll = sessions(undefined, { type: SUCCESS(ACTION_TYPES.FIND_ALL), payload: { data: ['dummy', 'values'] } });
+      expect(toTestFindAll).to.contain({
+        loading: false,
+        updateSuccess: false,
+        updateFailure: false
+      });
+      expect(toTestFindAll.sessions.length).to.equals(2);
+      const toTestInvalidate = sessions(undefined, { type: SUCCESS(ACTION_TYPES.INVALIDATE) });
+      expect(toTestInvalidate).to.contain({
+        loading: false,
+        updateSuccess: true,
+        updateFailure: false
+      });
+    });
+
+    it('should detect a failure', () => {
+      const toTestFindAll = sessions(undefined, { type: FAILURE(ACTION_TYPES.FIND_ALL) });
+      expect(toTestFindAll).to.contain({
+        loading: false,
+        updateSuccess: false,
+        updateFailure: false
+      });
+
+      const toTestInvalidate = sessions(undefined, { type: FAILURE(ACTION_TYPES.INVALIDATE) });
+      expect(toTestInvalidate).to.contain({
+        loading: false,
+        updateSuccess: false,
+        updateFailure: true
+      });
+    });
+  });
+});
