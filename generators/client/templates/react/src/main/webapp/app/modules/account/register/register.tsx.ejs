@@ -25,29 +25,9 @@ import { Row, Col, Alert, Button } from 'reactstrap';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { handleRegister, reset } from './register.reducer';
 
-export const mainErrorMessages = {
-  failed: (
-    <Translate contentKey="register.messages.error.fail">
-      <span><strong>Registration failed!</strong> Please try again later.</span>
-    </Translate>
-  ),
-  userexists: (
-    <Translate contentKey="register.messages.error.userexists">
-      <span><strong>Login name already registered!</strong> Please choose another one.</span>
-    </Translate>
-  ),
-  emailexists: (
-    <Translate contentKey="register.messages.error.emailexists">
-      <span><strong>Email is already in use!</strong> Please choose another one.</span>
-    </Translate>
-  )
-};
-
 export interface IRegisterProps {
   handleRegister: Function;
   reset: Function;
-  registrationSuccess: boolean;
-  registrationFailure: boolean;
   errorMessage: string;
 <%_ if (enableTranslation) { _%>
   currentLocale: string;
@@ -81,27 +61,6 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
   };
 
   render() {
-    const { registrationSuccess, registrationFailure, errorMessage } = this.props;
-    let alertMessage = null;
-
-    if (registrationFailure) {
-      alertMessage = (
-        <Alert color="danger">{mainErrorMessages[errorMessage] ? mainErrorMessages[errorMessage] : mainErrorMessages.failed}</Alert>
-      );
-    } else {
-      if (registrationSuccess) {
-        alertMessage = (
-          <Alert color="success">
-            <Translate contentKey="register.messages.success">
-              <span><strong>Registration saved!</strong> Please check your email for confirmation.</span>
-            </Translate>
-          </Alert>
-        );
-      } else {
-        alertMessage = null;
-      }
-    }
-
     return (
       <div>
         <Row className="justify-content-center">
@@ -109,7 +68,6 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
             <h1>
               <Translate contentKey="register.title">Registration</Translate>
             </h1>
-            {alertMessage}
           </Col>
         </Row>
         <Row className="justify-content-center">

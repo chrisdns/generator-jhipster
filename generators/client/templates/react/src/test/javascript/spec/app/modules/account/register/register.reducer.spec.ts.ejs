@@ -24,8 +24,6 @@ import register, { ACTION_TYPES } from 'app/modules/account/register/register.re
 describe('Creating account tests', () => {
   const initialState = {
     loading: false,
-    registrationSuccess: false,
-    registrationFailure: false,
     errorMessage: null
   };
 
@@ -47,7 +45,7 @@ describe('Creating account tests', () => {
 
   it('should handle RESET', () => {
     expect(register(
-      { loading: true, registrationSuccess: true, registrationFailure: true, errorMessage: '' },
+      { loading: true, errorMessage: '' },
       { type: ACTION_TYPES.RESET })
     ).to.eql({
       ...initialState
@@ -62,8 +60,7 @@ describe('Creating account tests', () => {
         payload: 'fake payload'
       })
     ).to.eql({
-      ...initialState,
-      registrationSuccess: true
+      ...initialState
     });
   });
 
@@ -77,7 +74,6 @@ describe('Creating account tests', () => {
       })
     ).to.eql({
       ...initialState,
-      registrationFailure: true,
       errorMessage: payload.response.data.errorKey
     });
   });

@@ -27,8 +27,6 @@ export const ACTION_TYPES = {
 
 const initialState = {
   loading: false,
-  registrationSuccess: false,
-  registrationFailure: false,
   errorMessage: null
 };
 
@@ -43,13 +41,11 @@ export default (state = initialState, action) => {
     case FAILURE(ACTION_TYPES.CREATE_ACCOUNT):
       return {
         ...initialState,
-        registrationFailure: true,
         errorMessage: action.payload.response.data.errorKey
       };
     case SUCCESS(ACTION_TYPES.CREATE_ACCOUNT):
       return {
         ...initialState,
-        registrationSuccess: true
       };
     case ACTION_TYPES.RESET:
       return {
