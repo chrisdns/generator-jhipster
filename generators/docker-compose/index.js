@@ -24,6 +24,8 @@ const prompts = require('./prompts');
 const writeFiles = require('./files').writeFiles;
 const BaseGenerator = require('../generator-base');
 const docker = require('../docker-base');
+const Statistics = require('../statistics');
+
 
 const constants = require('../generator-constants');
 
@@ -131,8 +133,8 @@ module.exports = class extends BaseGenerator {
     get configuring() {
         return {
             insight() {
-                const insight = this.insight();
-                insight.trackWithEvent('generator', 'docker-compose');
+                const stats = new Statistics();
+                stats.sendSubGenEvent('generator', 'docker-compose');
             },
 
             checkImages: docker.checkImages,
