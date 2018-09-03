@@ -44,8 +44,8 @@ export const waitForCount = (elementArrayFinder: ElementArrayFinder, expectedCou
   return elementArrayFinder.count().then(actualCount => expectedCount === actualCount);
 };
 
-export const waitUntilCount = (elementArrayFinder: ElementArrayFinder, expectedCount: number, timeout = waitUntilDisplayedTimeout) => {
-  browser.wait(
+export const waitUntilCount = async (elementArrayFinder: ElementArrayFinder, expectedCount: number, timeout = waitUntilDisplayedTimeout) => {
+  await browser.wait(
     waitForCount(elementArrayFinder, expectedCount),
     timeout,
     `Failed while waiting for "${elementArrayFinder.locator()}" to have ${expectedCount} elements.`

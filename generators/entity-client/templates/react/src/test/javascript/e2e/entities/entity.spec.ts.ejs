@@ -150,7 +150,7 @@ describe('<%= entityClass %> e2e test', () => {
     });<%= closeBlockComment %>
 
     <%= openBlockComment %> it('should delete last <%= entityClass %>', async () => {
-        <%= entityInstance %>ComponentsPage.waitUntilLoaded();
+        await <%= entityInstance %>ComponentsPage.waitUntilLoaded();
         const nbButtonsBeforeDelete = await <%= entityInstance %>ComponentsPage.countDeleteButtons();
         await <%= entityInstance %>ComponentsPage.clickOnLastDeleteButton();
 
@@ -158,7 +158,7 @@ describe('<%= entityClass %> e2e test', () => {
         expect(await <%= entityInstance %>DeleteDialog.getDialogTitle().getAttribute('id')).to.match(/<%= i18nKeyPrefix %>.delete.question/);
         await <%= entityInstance %>DeleteDialog.clickOnConfirmButton();
 
-        <%= entityInstance %>ComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
+        await <%= entityInstance %>ComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
         expect(await <%= entityInstance %>ComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
     });<%= closeBlockComment %>
 

@@ -41,12 +41,12 @@ export default class <%= entityClass %>ComponentsPage {
         return this.title;
     }
 
-    waitUntilLoaded() {
-        waitUntilDisplayed(this.deleteButtons.first());
+    async waitUntilLoaded() {
+        await waitUntilDisplayed(this.deleteButtons.first());
     }
 
-    waitUntilDeleteButtonsLength(length) {
-        waitUntilCount(this.deleteButtons, length);
+    async waitUntilDeleteButtonsLength(length) {
+        await waitUntilCount(this.deleteButtons, length);
     }
 }
 
