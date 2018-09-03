@@ -17,6 +17,11 @@ export default class RegisterPage extends BasePage {
     this.selector = selector;
   }
 
+  async get() {
+    await browser.get('#/register');
+    await this.waitUntilDisplayed();
+  }
+
   async getTitle() {
     return this.title.getAttribute('id');
   }

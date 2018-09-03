@@ -95,7 +95,7 @@ describe('Account', () => {
     await signInPage.get();
 
     expect(await signInPage.getTitle()).to.eq(loginPageTitle);
-    
+
     await signInPage.username.sendKeys('admin');
     await signInPage.password.sendKeys('admin');
     await signInPage.loginButton.click();
@@ -109,7 +109,7 @@ describe('Account', () => {
     await signInPage.loginWithOAuth('admin', 'admin');
     const success = element(by.className('alert-success'));
     await waitUntilDisplayed(success);
-    
+
     // Success alert should appear in home page
     expect(await success.isPresent()).to.be.true;
     <%_ } _%>
@@ -117,6 +117,8 @@ describe('Account', () => {
 
   <%_ if (authenticationType !== 'oauth2') { _%>
   it('should be able to sign up', async () => {
+    await waitUntilDisplayed(navBarPage.accountMenu);
+
     registerPage = await navBarPage.getRegisterPage();
     await registerPage.waitUntilDisplayed();
     expect(await registerPage.getTitle()).to.eq(registerPageTitle);
@@ -133,9 +135,44 @@ describe('Account', () => {
     expect(await toast.isPresent()).to.be.true;
   });
 
-  it('should not be able to sign up if login already taken', async () => {
-    await registerPage.save();
+  it('should load user management', async () => {
+    await signInPage.get();
+    expect(await signInPage.getTitle()).to.eq(loginPageTitle);
 
+    await signInPage.username.sendKeys('admin');
+    await signInPage.password.sendKeys('admin');
+    await signInPage.loginButton.click();
+    await signInPage.waitUntilHidden();
+
+    const title = element(by.id('user-management-page-heading'));
+    await waitUntilDisplayed(navBarPage.adminMenu);
+
+    await navBarPage.clickOnAdminMenuItem('user-management');
+    await waitUntilDisplayed(title);
+
+    expect(await title.isPresent()).to.be.true;
+  });
+
+  it('should activate the new registered user', async () => {
+    expect(await element(by.id('user-management-page-heading')).isPresent()).to.be.true;
+
+    const modifiedDateSortButton = getModifiedDateSortButton();
+    await modifiedDateSortButton.click();
+
+    const deactivatedButton = getUserDeactivatedButtonByLogin('user_test');
+    await deactivatedButton.click();
+    await waitUntilHidden(deactivatedButton);
+
+    // Deactivated button should disappear
+    expect(await deactivatedButton.isPresent()).to.be.false;
+    await navBarPage.autoSignOut();
+  });
+
+  it('should not be able to sign up if login already taken', async () => {
+    await registerPage.get();
+    expect(await registerPage.getTitle()).to.eq(registerPageTitle);
+
+    await registerPage.autoSignUpUsing('user_test', 'admin@localhost.jh', 'user_test');
     const toast = getToastByInnerText('Login name already used!');
     await waitUntilDisplayed(toast);
 
@@ -153,38 +190,6 @@ describe('Account', () => {
 
     // Error toast should appear
     expect(await toast.isPresent()).to.be.true;
-  });
-
-  it('should load user management', async () => {
-    await signInPage.get();
-
-    await signInPage.username.sendKeys('admin');
-    await signInPage.password.sendKeys('admin');
-    await signInPage.loginButton.click();
-    await signInPage.waitUntilHidden();
- 
-    const title = element(by.id('user-management-page-heading'));
-    await waitUntilDisplayed(navBarPage.adminMenu);
-
-    await navBarPage.clickOnAdminMenuItem('user-management');
-    await waitUntilDisplayed(title);
- 
-    expect(await title.isPresent()).to.be.true;
-  });
-
-  it('should activate the new registered user', async () => {
-    expect(await element(by.id('user-management-page-heading')).isPresent()).to.be.true;
-
-    const modifiedDateSortButton = getModifiedDateSortButton();
-    await modifiedDateSortButton.click();
-
-    const deactivatedButton = getUserDeactivatedButtonByLogin('user_test');
-    await deactivatedButton.click();
-    await waitUntilHidden(deactivatedButton);
-
-    // Deactivated button should disappear
-    expect(await deactivatedButton.isPresent()).to.be.false;
-    await navBarPage.autoSignOut();
   });
 
   it('should be able to log in with new registered account', async () => {
@@ -234,7 +239,7 @@ describe('Account', () => {
     await browser.refresh();
     await passwordPage.waitUntilDisplayed();
     expect(await passwordPage.getTitle()).to.eq(passwordPageTitle);
-   
+
     await passwordPage.autoChangePassword('admin', 'new_password', 'new_password');
     <%_ if (enableTranslation) { _%>
     const toast = getToastByInnerText('Password changed!');
@@ -263,7 +268,7 @@ describe('Account', () => {
     expect(await passwordPage.getTitle()).to.eq(passwordPageTitle);
 
     await passwordPage.autoChangePassword('new_password', 'admin', 'admin');
-    
+
     await navBarPage.autoSignOut();
   });
 
@@ -280,12 +285,14 @@ describe('Account', () => {
   });
 
   it('should be able to change settings', async () => {
+    await waitUntilDisplayed(navBarPage.accountMenu);
+
     settingsPage = await navBarPage.getSettingsPage();
     expect(await settingsPage.getTitle()).to.eq(settingsPageTitle);
 
     await settingsPage.firstName.sendKeys('jhipster');
     await settingsPage.lastName.sendKeys('retspihj');
-    await settingsPage.save();
+    await settingsPage.saveButton.click();
 
     const toast = getToastByInnerText('Settings saved!');
     await waitUntilDisplayed(toast);
@@ -297,12 +304,16 @@ describe('Account', () => {
 
   it('should not be able to change settings if email already exists', async () => {
     await signInPage.get();
+    await signInPage.waitUntilDisplayed();
+    expect(await signInPage.getTitle()).to.eq(loginPageTitle);
+
     await signInPage.username.sendKeys('admin');
     await signInPage.password.sendKeys('admin');
     await signInPage.loginButton.click();
     await signInPage.waitUntilHidden();
 
     await settingsPage.get();
+    await settingsPage.waitUntilDisplayed();
     expect(await settingsPage.getTitle()).to.eq(settingsPageTitle);
 
     await settingsPage.setEmail('.jh');
@@ -319,7 +330,7 @@ describe('Account', () => {
     await browser.get('#/admin/user-management/user_test/delete');
     const deleteModal = element(by.className('modal'));
     await waitUntilDisplayed(deleteModal);
-        
+
     await element(by.buttonText('Delete')).click();
     await waitUntilHidden(deleteModal);
 
