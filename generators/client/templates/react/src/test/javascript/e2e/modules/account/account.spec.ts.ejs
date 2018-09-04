@@ -161,6 +161,7 @@ describe('Account', () => {
     await modifiedDateSortButton.click();
 
     const deactivatedButton = getUserDeactivatedButtonByLogin('user_test');
+    await waitUntilDisplayed(deactivatedButton);
     await deactivatedButton.click();
     await waitUntilHidden(deactivatedButton);
 
