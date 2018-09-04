@@ -30,6 +30,7 @@ export const waitUntilDisplayed = async (selector: ElementFinder, classname = ''
   );
 };
 
+
 export const waitUntilHidden = async (selector: ElementFinder, classname = '', timeout = waitUntilDisplayedTimeout) => {
   if (!checkSelectorExist(selector)) return;
 
@@ -40,6 +41,7 @@ export const waitUntilHidden = async (selector: ElementFinder, classname = '', t
   );
 };
 
+<%_ if (authenticationType !== 'oauth2') { _%>
 export const waitForCount = (elementArrayFinder: ElementArrayFinder, expectedCount: number) => () => {
   return elementArrayFinder.count().then(actualCount => expectedCount === actualCount);
 };
@@ -60,3 +62,4 @@ export const getUserDeactivatedButtonByLogin = (login: string): ElementFinder =>
 export const getToastByInnerText = (text: string): ElementFinder =>
   element(by.css('.toastify-container'))
     .element(by.cssContainingText('div[role=alert]', text));
+<%_ } _%>
