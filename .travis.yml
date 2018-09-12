@@ -37,24 +37,9 @@ env:
     # if JHIPSTER_BRANCH value is release, use the release from NPM
     - JHIPSTER_REPO=https://github.com/jhipster/generator-jhipster.git
     - JHIPSTER_BRANCH=release
+    - DISABLE_WEBPACK_LOGS=true
 
   matrix:
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
-    - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
-    - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
     - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
     - JHIPSTER=react-noi18n-es-ws-gradle-session PROTRACTOR=1
     - JHIPSTER=react-default PROFILE=prod PROTRACTOR=1
