@@ -1,10 +1,6 @@
 {
   "name": "generator-jhipster",
-<<<<<<< HEAD
-  "version": "5.2.1",
-=======
   "version": "5.3.1",
->>>>>>> fix-react-e2e
   "description": "Spring Boot + Angular/React in one handy generator",
   "files": [
     "cli",
@@ -47,7 +43,7 @@
     "ejs-lint": "npm run test:unit -- test/ejslint.js",
     "ejslint": "ejslint",
     "pretest": "npm run lint",
-    "test": "npm run test:unit -- test/*.spec.js --no-insight",
+    "test": "npm run test:unit -- test/**/*.spec.js test/*.spec.js --no-insight",
     "test:unit": "mocha --timeout 20000 --slow 0 --reporter spec",
     "jsdoc": "jsdoc --configure jsdoc-conf.json"
   },
@@ -61,11 +57,8 @@
     "glob": "7.1.2",
     "gulp-filter": "5.1.0",
     "insight": "0.10.1",
-<<<<<<< HEAD
     "jhipster-core": "3.3.1",
-=======
-    "jhipster-core": "3.3.2",
->>>>>>> fix-react-e2e
+    "js-object-pretty-print": "0.3.0",
     "js-yaml": "3.12.0",
     "lodash": "4.17.10",
     "meow": "5.0.0",
